@@ -11,8 +11,10 @@ export function mount(context) {
   const consultations = nonNegativeInteger(context.consultasPorFase ?? context.stats?.penalties);
   const speedBonus = nonNegativeInteger(context.stats?.speedBonus);
   const consultationPenalty = nonNegativeInteger(context.stats?.consultationPenalty);
+  const errorPenalty = nonNegativeInteger(context.stats?.errorPenalty ?? incorrect * (GAME_CONFIG.aura.penalidadeErro ?? 50));
   const baseAura = correct * GAME_CONFIG.aura.acerto;
-  const auraFinal = nonNegativeInteger(context.auraFinal);
+  const totalPenalties = consultationPenalty + errorPenalty;
+  const auraFinal = nonNegativeInteger(context.auraFinal ?? Math.max(0, baseAura + speedBonus - totalPenalties));
   const cutoff = nonNegativeInteger(context.notaCorte ?? phase.auraCutoff);
   const scale = Math.max(auraFinal, cutoff, 1);
   const progress = Math.min((auraFinal / scale) * 100, 100);
@@ -39,14 +41,13 @@ export function mount(context) {
     </section>
     <dl class="result-breakdown">
       <div><dt>Acertos (${correct})</dt><dd>+${baseAura} aura</dd></div>
-      <div><dt>Erros (${incorrect})</dt><dd>0 aura</dd></div>
-      <div><dt>Consultas (${consultations})</dt><dd>incluídas na penalidade</dd></div>
+      <div><dt>Erros (${incorrect})</dt><dd>−${errorPenalty} aura</dd></div>
+      <div><dt>Consultas (${consultations})</dt><dd>−${consultationPenalty} aura</dd></div>
       <div><dt>Bônus de velocidade</dt><dd>+${speedBonus}</dd></div>
-      <div><dt>Penalidade de consulta</dt><dd>−${consultationPenalty}</dd></div>
       <div class="result-total"><dt>Aura final</dt><dd>${auraFinal}</dd></div>
     </dl>
-    <p class="aura-equation" aria-label="Cálculo da aura: acertos vezes ${GAME_CONFIG.aura.acerto}, mais bônus de velocidade, menos penalidade de consulta">
-      ${baseAura} + ${speedBonus} − ${consultationPenalty} = ${auraFinal}
+    <p class="aura-equation" aria-label="Cálculo da aura: acertos vezes ${GAME_CONFIG.aura.acerto}, mais bônus de velocidade, menos penalidades de erro e consulta">
+      ${baseAura} + ${speedBonus} − ${totalPenalties} = ${auraFinal}
     </p>
     <button class="button button-primary" type="button">${action}</button>
   `;

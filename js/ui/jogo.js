@@ -1,7 +1,7 @@
 import { GAME_CONFIG } from "../config.js";
 import { getPhase, TOTAL_PHASES } from "../phases.js";
 import { getQuestao, getTotalQuestoes, createSeededRng } from "../questions/gerador.js";
-import { aplicarAcerto, aplicarConsulta } from "../systems/aura.js";
+import { aplicarAcerto, aplicarErro, aplicarConsulta } from "../systems/aura.js";
 import { finalizarFase } from "../systems/fase.js";
 import { createTimer } from "../systems/timer.js";
 import { validar } from "../util/validar.js";
@@ -15,7 +15,15 @@ export function mount(context) {
   const phaseInfo = getPhase(phase);
   const attempt = getNextAttempt(phase);
   const phaseContext = context.state.context;
-  const stats = { correct: 0, incorrect: 0, penalties: 0, speedBonus: 0, consultationPenalty: 0, ...context.stats };
+  const stats = {
+    correct: 0,
+    incorrect: 0,
+    penalties: 0,
+    speedBonus: 0,
+    consultationPenalty: 0,
+    errorPenalty: 0,
+    ...context.stats,
+  };
   let usedModelIds = context.usedModelIds ?? [];
   const consultasPorFase = Number(context.consultasPorFase) || 0;
   let consultedThisQuestion = Boolean(context.consultadaNestaQuestao);
@@ -26,6 +34,10 @@ export function mount(context) {
   phaseContext.stats = stats;
   phaseContext.consultasPorFase = consultasPorFase;
   phaseContext.consultadaNestaQuestao = consultedThisQuestion;
+
+  const totalQuestoesFase = Math.max(1, getTotalQuestoes(phase));
+  const tempoIdealPorQuestao = phaseInfo.durationSeconds / totalQuestoesFase;
+  let inicioQuestaoTempo = phaseContext.tempoRestante;
 
   let question = getQuestao(phase, createSeededRng(phase, `${attempt}:${usedModelIds.length}`), { excludeModelIds: usedModelIds });
   const screen = document.createElement("section");
@@ -46,7 +58,9 @@ export function mount(context) {
       <div class="notebook-content"><h2 id="notebook-title">Consulta</h2>${phaseInfo.notebook.map((paragraph) => `<p>${paragraph}</p>`).join("")}</div>
     </aside>
     <form class="game-footer">
-      <button class="notebook-button" type="button" aria-expanded="false">Caderno</button>
+      <button class="notebook-button" type="button" aria-expanded="false" title="Consultar caderno (-${GAME_CONFIG.aura.penalidadeConsulta} aura)">
+        Caderno (−${GAME_CONFIG.aura.penalidadeConsulta})
+      </button>
       <label class="sr-only" for="game-answer">Sua resposta</label>
       <input id="game-answer" type="text" inputmode="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Sua resposta" />
       <button class="send-button" type="submit">Enviar</button>
@@ -94,6 +108,7 @@ export function mount(context) {
     if (phaseFinished) return;
     phaseFinished = true;
     timer.pause();
+    phaseContext.aura = Math.max(0, phaseContext.aura);
     finalizarFase({ state: context.state, phase, filaConcluida, stats, consultasPorFase: phaseContext.consultasPorFase });
   };
   const renderDebugState = () => {
@@ -117,22 +132,24 @@ export function mount(context) {
     notebookPanel.hidden = true;
     backdrop.hidden = true;
     notebookButton.setAttribute("aria-expanded", "false");
+    if (!phaseFinished && !feedbackTimeout) timer.resume();
     window.requestAnimationFrame(() => input.focus());
   };
   const openNotebook = () => {
+    if (phaseFinished || feedbackTimeout || !notebookPanel.hidden) return;
     notebookPanel.hidden = false;
     backdrop.hidden = false;
     notebookButton.setAttribute("aria-expanded", "true");
-    if (!consultedThisQuestion) {
-      consultedThisQuestion = true;
-      const effect = aplicarConsulta(phaseContext);
-      stats.penalties += 1;
-      stats.consultationPenalty += Math.abs(effect.variacao);
-      phaseContext.stats = stats;
-      phaseContext.consultasPorFase += 1;
-      phaseContext.consultadaNestaQuestao = true;
-      renderAura(effect.variacao || -GAME_CONFIG.aura.penalidadeConsulta);
-    }
+    timer.pause();
+
+    consultedThisQuestion = true;
+    const effect = aplicarConsulta(phaseContext);
+    stats.penalties += 1;
+    stats.consultationPenalty += Math.abs(effect.variacao);
+    phaseContext.stats = stats;
+    phaseContext.consultasPorFase += 1;
+    phaseContext.consultadaNestaQuestao = true;
+    renderAura(effect.variacao);
   };
   const showNextQuestion = (nextUsedModelIds) => {
     if (nextUsedModelIds.length >= getTotalQuestoes(phase)) {
@@ -143,6 +160,7 @@ export function mount(context) {
     phaseContext.usedModelIds = usedModelIds;
     consultedThisQuestion = false;
     phaseContext.consultadaNestaQuestao = false;
+    inicioQuestaoTempo = phaseContext.tempoRestante;
     question = getQuestao(phase, createSeededRng(phase, `${attempt}:${usedModelIds.length}`), { excludeModelIds: usedModelIds });
     questionElement.dataset.questionId = question.id;
     questionElement.innerHTML = question.enunciado;
@@ -178,8 +196,14 @@ export function mount(context) {
     stats[result.correta ? "correct" : "incorrect"] += 1;
     phaseContext.stats = stats;
     if (result.correta) {
-      const effect = aplicarAcerto(phaseContext, { tempoRestanteQuestao: phaseContext.tempoRestante, tempoTotalQuestao: phaseInfo.durationSeconds });
+      const tempoGasto = Math.max(0, inicioQuestaoTempo - phaseContext.tempoRestante);
+      const tempoRestanteQuestao = Math.max(0, tempoIdealPorQuestao - tempoGasto);
+      const effect = aplicarAcerto(phaseContext, { tempoRestanteQuestao, tempoTotalQuestao: tempoIdealPorQuestao });
       stats.speedBonus += effect.bonusVelocidade;
+      renderAura(effect.variacao);
+    } else {
+      const effect = aplicarErro(phaseContext);
+      stats.errorPenalty += Math.abs(effect.variacao);
       renderAura(effect.variacao);
     }
     const allUsedModels = [...usedModelIds, question.modelId];
