@@ -1,0 +1,193 @@
+@media (max-width: 359px) {
+  .app-shell {
+    padding-inline: 0.75rem;
+  }
+
+  .start-card {
+    gap: 1rem;
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 359px) {
+  .button-row { flex-direction: column; }
+  .button-row .button { width: 100%; }
+
+  .app-shell:has(.briefing-card) {
+    padding-bottom: calc(8rem + env(safe-area-inset-bottom));
+  }
+
+  .briefing-actions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 599px) {
+  .app-shell:has(.briefing-card) {
+    align-items: start;
+    padding-top: max(1.5rem, env(safe-area-inset-top));
+    padding-bottom: calc(5.75rem + env(safe-area-inset-bottom));
+  }
+
+  .briefing-card {
+    width: min(100%, 30rem);
+  }
+
+  .briefing-actions {
+    position: fixed;
+    right: max(1rem, env(safe-area-inset-right));
+    bottom: max(1rem, env(safe-area-inset-bottom));
+    left: max(1rem, env(safe-area-inset-left));
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 599px) {
+  .game-footer {
+    gap: 0.375rem;
+    padding-top: 0.5rem;
+  }
+}
+
+@media (max-width: 359px) {
+  .game-footer {
+    grid-template-columns: minmax(44px, auto) minmax(0, 1fr) minmax(44px, auto);
+    gap: 0.25rem;
+    padding-right: max(0.5rem, env(safe-area-inset-right));
+    padding-left: max(0.5rem, env(safe-area-inset-left));
+  }
+
+  .game-footer button {
+    padding-inline: 0.5rem;
+  }
+}
+
+@media (max-width: 900px) and (max-height: 600px) and (orientation: landscape) {
+  .game-hud {
+    min-height: 0;
+    padding-top: max(0.25rem, env(safe-area-inset-top));
+    padding-bottom: 0.25rem;
+  }
+
+  .hud-value {
+    font-size: 0.75rem;
+  }
+
+  .game-footer {
+    padding-top: 0.25rem;
+    padding-bottom: calc(0.25rem + env(safe-area-inset-bottom));
+  }
+
+  .question-area {
+    padding: 0.5rem max(0.75rem, env(safe-area-inset-right)) 0.5rem max(0.75rem, env(safe-area-inset-left));
+  }
+
+  .question-text {
+    padding: 0.75rem;
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+  }
+}
+
+@media (max-width: 599px) {
+  .notebook-panel {
+    top: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    max-width: none;
+    height: min(85%, 44rem);
+    padding-bottom: env(safe-area-inset-bottom);
+    border-top: 1px solid var(--border-color);
+    border-left: 0;
+    border-radius: 1rem 1rem 0 0;
+    animation: notebook-slide-up 180ms ease-out;
+  }
+
+  @keyframes notebook-slide-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
+}
+
+@media (max-width: 640px) {
+  .mode-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .menu-card {
+    width: min(100%, 34rem);
+  }
+}
+
+@media (max-width: 420px) {
+  .arcade-hud {
+    gap: 0.35rem;
+    padding-inline: max(0.75rem, env(safe-area-inset-right)) max(0.75rem, env(safe-area-inset-left));
+  }
+
+  .arcade-hud .hud-value {
+    gap: 0.3rem;
+    font-size: 0.6875rem;
+  }
+
+  .arcade-hud .hud-value output {
+    font-size: 1rem;
+  }
+
+  .arcade-lives .life {
+    font-size: 1.05rem;
+  }
+
+  .question-tag-phase {
+    display: none;
+  }
+
+  .question-stage {
+    gap: 0.75rem;
+    padding: 0.75rem max(0.75rem, env(safe-area-inset-right)) 0.75rem max(0.75rem, env(safe-area-inset-left));
+  }
+
+  .arcade-footer .send-button {
+    min-width: 4.75rem;
+    padding-inline: 0.75rem;
+  }
+
+  .ranking-entry {
+    grid-template-columns: 2rem minmax(0, 1fr) auto;
+    gap: 0.55rem;
+    padding-inline: 0.6rem;
+  }
+
+  .ranking-position {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .ranking-meta {
+    font-size: 0.6875rem;
+  }
+
+  .arcade-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .name-row {
+    flex-direction: column;
+  }
+
+  .name-row .button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 900px) and (max-height: 600px) and (orientation: landscape) {
+  .question-stage {
+    gap: 0.5rem;
+  }
+
+  .game-progress {
+    height: 2px;
+  }
+
+  .question-meta {
+    gap: 0.35rem;
+  }
+}
