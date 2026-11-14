@@ -127,6 +127,72 @@ export const fase3 = [
       };
     },
   }),
+  defineQuestion({
+    id: "f3-saturacao",
+    fase: 3,
+    gerar(rng) {
+      const molecula = pick(MOLECULAS, rng);
+      const saturada = molecula.pis === 0;
+      const resposta = saturada ? "saturada" : "insaturada";
+
+      return {
+        enunciado: `Quanto às ligações entre átomos, a molécula de <strong>${molecula.nome}</strong> (${molecula.formula}) é <strong>saturada</strong> ou <strong>insaturada</strong>?`,
+        resposta,
+        aliases: saturada ? ["saturado"] : ["insaturado"],
+        formato: "texto",
+        params: { molecula: molecula.nome, saturada },
+      };
+    },
+  }),
+  defineQuestion({
+    id: "f3-total-ligacoes",
+    fase: 3,
+    gerar(rng) {
+      const molecula = pick(MOLECULAS, rng);
+      const total = molecula.sigmas + molecula.pis;
+
+      return {
+        enunciado: `Somando ligações sigma (σ) e pi (π), qual é o total de ligações covalentes no <strong>${molecula.nome}</strong> (${molecula.formula})?`,
+        resposta: String(total),
+        aliases: aliasesNumericos(total),
+        formato: "texto",
+        params: { molecula: molecula.nome, total },
+      };
+    },
+  }),
+  defineQuestion({
+    id: "f3-carbonos-saturados",
+    fase: 3,
+    gerar(rng) {
+      const molecula = pick(MOLECULAS, rng);
+      const saturados = molecula.carbonos.filter((tipo) => tipo === "sp3").length;
+
+      return {
+        enunciado: `Quantos carbonos saturados (apenas ligações simples) existem no <strong>${molecula.nome}</strong> (${molecula.formula})?`,
+        resposta: String(saturados),
+        aliases: aliasesNumericos(saturados),
+        formato: "texto",
+        params: { molecula: molecula.nome, saturados },
+      };
+    },
+  }),
+  defineQuestion({
+    id: "f3-hibridizacao-geometria",
+    fase: 3,
+    gerar(rng) {
+      const molecula = pick(MOLECULAS_COM_HIBRIDIZACAO_UNICA, rng);
+      const geometria = molecula.geometrias[0];
+      const hibridizacao = molecula.carbonos[0];
+
+      return {
+        enunciado: `Um carbono com geometria <strong>${geometria}</strong> (como no ${molecula.nome}) apresenta qual hibridização?`,
+        resposta: hibridizacao,
+        aliases: [hibridizacao.toUpperCase()],
+        formato: "texto",
+        params: { molecula: molecula.nome, geometria, hibridizacao },
+      };
+    },
+  }),
 ];
 
 function aliasesNumericos(numero) {

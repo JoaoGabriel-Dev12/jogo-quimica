@@ -14,7 +14,12 @@ export const GAME_CONFIG = Object.freeze({
     { duracao: 210, notaCorte: 600, colegas: 18 },
     { duracao: 240, notaCorte: 650, colegas: 20 },
   ]),
-  aura: Object.freeze({ acerto: 100, bonusVelocidadeMax: 50, penalidadeConsulta: 30 }),
+  aura: Object.freeze({
+    acerto: 100,
+    bonusVelocidadeMax: 50,
+    penalidadeConsulta: 30,
+    penalidadeErro: 50,
+  }),
   feedback: Object.freeze({ acertoMs: 600, erroMs: 1500 }),
   timer: Object.freeze({ avisoSegundos: 10 }),
   interface: Object.freeze({ transicaoMs: 150 }),

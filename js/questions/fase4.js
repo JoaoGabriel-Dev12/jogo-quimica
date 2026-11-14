@@ -16,6 +16,25 @@ const casosDeCadeia = [
   { formula: "CH3-CH2-CH2-CH2-CH2-CH3", resposta: "normal" },
 ];
 
+const casosHeteroatomo = [
+  { formula: "CH3-CH2-O-CH3", resposta: "heterogênea" },
+  { formula: "CH3-NH-CH2-CH3", resposta: "heterogênea" },
+  { formula: "CH3-S-CH3", resposta: "heterogênea" },
+  { formula: "CH3-CH2-CH2-OH", resposta: "homogênea" },
+  { formula: "CH3-CH2-CH2-NH2", resposta: "homogênea" },
+  { formula: "CH3-CH2-CH2-CH3", resposta: "homogênea" },
+];
+
+const casosFechamento = [
+  { nome: "ciclopropano", resposta: "fechada" },
+  { nome: "ciclobutano", resposta: "fechada" },
+  { nome: "ciclopentano", resposta: "fechada" },
+  { nome: "cicloexano", resposta: "fechada" },
+  { nome: "butano", resposta: "aberta" },
+  { nome: "pentano", resposta: "aberta" },
+  { nome: "propeno", resposta: "aberta" },
+];
+
 export const fase4 = [
   defineQuestion({
     id: "f4-classe",
@@ -115,6 +134,73 @@ export const fase4 = [
         aliases: insaturacoes === 0 ? ["zero", "nenhuma"] : [],
         formato: "texto",
         params: { n, tipo, formula },
+      };
+    },
+  }),
+  defineQuestion({
+    id: "f4-hidrogenios",
+    fase: 4,
+    gerar(rng) {
+      const tipo = pick(["alcano", "alceno", "alcino"], rng);
+      const n = randomInt(2, 8, rng);
+      const hidrogenios = {
+        alcano: 2 * n + 2,
+        alceno: 2 * n,
+        alcino: 2 * n - 2,
+      }[tipo];
+
+      return {
+        enunciado: `Quantos átomos de hidrogênio possui um <strong>${tipo}</strong> de cadeia aberta com <strong>${n} carbonos</strong>?`,
+        resposta: String(hidrogenios),
+        aliases: [],
+        formato: "texto",
+        params: { tipo, n, hidrogenios },
+      };
+    },
+  }),
+  defineQuestion({
+    id: "f4-carbonos",
+    fase: 4,
+    gerar(rng) {
+      const n = randomInt(1, alcanosLineares.length, rng);
+      const nome = alcanosLineares[n - 1];
+
+      return {
+        enunciado: `Quantos átomos de carbono existem na cadeia principal do <strong>${nome}</strong>?`,
+        resposta: String(n),
+        aliases: [],
+        formato: "texto",
+        params: { nome, n },
+      };
+    },
+  }),
+  defineQuestion({
+    id: "f4-homogenea-heterogenea",
+    fase: 4,
+    gerar(rng) {
+      const caso = pick(casosHeteroatomo, rng);
+
+      return {
+        enunciado: `Observe a estrutura <strong>${caso.formula}</strong>. Quanto à presença de heteroátomo entre carbonos, essa cadeia é homogênea ou heterogênea?`,
+        resposta: caso.resposta,
+        aliases: caso.resposta === "heterogênea" ? ["heterogenea"] : ["homogenea"],
+        formato: "texto",
+        params: { formula: caso.formula },
+      };
+    },
+  }),
+  defineQuestion({
+    id: "f4-aberta-fechada",
+    fase: 4,
+    gerar(rng) {
+      const caso = pick(casosFechamento, rng);
+
+      return {
+        enunciado: `Quanto ao fechamento, o hidrocarboneto <strong>${caso.nome}</strong> possui cadeia aberta ou fechada?`,
+        resposta: caso.resposta,
+        aliases: caso.resposta === "fechada" ? ["cíclica", "ciclica"] : ["acíclica", "aciclica"],
+        formato: "texto",
+        params: { nome: caso.nome },
       };
     },
   }),
