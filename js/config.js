@@ -24,3 +24,23 @@ export const GAME_CONFIG = Object.freeze({
   timer: Object.freeze({ avisoSegundos: 10 }),
   interface: Object.freeze({ transicaoMs: 150 }),
 });
+<<<<<<< HEAD
+=======
+
+export const ARCADE_CONFIG = Object.freeze({
+  totalQuestoes: 15,
+  vidas: 3,
+  tempoPorQuestao: 12,
+  avisoSegundos: 4,
+  feedbackMs: 1100,
+  pontosAcerto: 100,
+  bonusTempoMax: 50,
+  bonusCombo: 10,
+  comboMax: 5,
+  nomeMax: 16,
+  nomeMin: 2,
+  rankingLimite: 50,
+  rankingExibicao: 10,
+  rankingChave: "quimica-organica:arcade:ranking:v1",
+});
+>>>>>>> origin/master

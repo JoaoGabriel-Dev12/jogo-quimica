@@ -22,16 +22,32 @@ export function createState({ root, screens, initialContext = {} }) {
       if (!screen) throw new Error(`Tela desconhecida: ${name}`);
       const id = ++transitionId;
       const previousName = currentName;
+<<<<<<< HEAD
       state.context = context;
       currentScreen?.unmount?.();
+=======
+      const previousScreen = currentScreen;
+      state.context = context;
+      currentScreen = null;
+      currentName = null;
+      previousScreen?.unmount?.();
+>>>>>>> origin/master
       root.classList.add("is-transitioning");
       await new Promise((resolve) => window.setTimeout(resolve, GAME_CONFIG.interface.transicaoMs));
       if (id !== transitionId) return;
       root.replaceChildren();
       currentName = name;
       currentScreen = screen;
+<<<<<<< HEAD
       screen.mount({ ...context, state });
       root.classList.remove("is-transitioning");
+=======
+      try {
+        screen.mount({ ...context, state });
+      } finally {
+        root.classList.remove("is-transitioning");
+      }
+>>>>>>> origin/master
       state.emit("mudou", { from: previousName, to: name, context: state.context });
     },
   };

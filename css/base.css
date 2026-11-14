@@ -1,17 +1,79 @@
 :root {
   color-scheme: dark;
+<<<<<<< HEAD
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 16px;
   line-height: 1.5;
   background: #111111;
   color: #eeeeee;
+=======
+  --bg-main: #090a0f;
+  --bg-deep: #06070b;
+  --bg-card: #131620;
+  --bg-card-raised: #1a1f2e;
+  --bg-card-hover: #232a3f;
+  --bg-input: #0d1018;
+  --border-color: #232a3d;
+  --border-strong: #313b59;
+  --text: #e8eef7;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  --primary: #10b981;
+  --primary-hover: #34d399;
+  --primary-soft: rgba(16, 185, 129, 0.12);
+  --primary-glow: rgba(16, 185, 129, 0.28);
+  --accent-cyan: #06b6d4;
+  --accent-cyan-soft: rgba(6, 182, 212, 0.12);
+  --accent-cyan-glow: rgba(6, 182, 212, 0.3);
+  --danger: #f43f5e;
+  --danger-soft: rgba(244, 63, 94, 0.12);
+  --warning: #fbbf24;
+  --font-sans: Inter, "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", "Cascadia Code", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  background: var(--bg-main);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+>>>>>>> origin/master
 }
 
 body {
   min-width: 320px;
   min-height: 100vh;
   min-height: 100dvh;
+<<<<<<< HEAD
   background: #111111;
+=======
+  background:
+    radial-gradient(1100px 620px at 12% -8%, rgba(6, 182, 212, 0.11), transparent 62%),
+    radial-gradient(900px 560px at 108% 4%, rgba(16, 185, 129, 0.1), transparent 58%),
+    radial-gradient(700px 500px at 50% 118%, rgba(6, 182, 212, 0.06), transparent 60%),
+    var(--bg-main);
+  color: var(--text);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, #000 20%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, #000 20%, transparent 78%);
+}
+
+::selection {
+  background: rgba(16, 185, 129, 0.35);
+  color: #f8fafc;
+>>>>>>> origin/master
 }
 
 button,
@@ -19,8 +81,19 @@ input {
   min-height: 44px;
 }
 
+<<<<<<< HEAD
 input {
   font-size: 16px;
+=======
+button {
+  background: transparent;
+  color: inherit;
+}
+
+input {
+  font-size: 16px;
+  caret-color: var(--primary);
+>>>>>>> origin/master
 }
 
 button {
@@ -28,13 +101,51 @@ button {
   touch-action: manipulation;
 }
 
+<<<<<<< HEAD
 button:focus-visible {
   outline: 3px solid #4ade80;
   outline-offset: 3px;
 }
 
 #app {
+=======
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--accent-cyan);
+  outline-offset: 3px;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+#app {
+  position: relative;
+  z-index: 1;
+>>>>>>> origin/master
   width: 100%;
   min-width: 0;
   overflow-wrap: anywhere;
 }
+<<<<<<< HEAD
+=======
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-deep);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a3248;
+  border: 2px solid var(--bg-deep);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3a4566;
+}
+>>>>>>> origin/master

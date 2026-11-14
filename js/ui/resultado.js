@@ -49,17 +49,39 @@ export function mount(context) {
     <p class="aura-equation" aria-label="Cálculo da aura: acertos vezes ${GAME_CONFIG.aura.acerto}, mais bônus de velocidade, menos penalidades de erro e consulta">
       ${baseAura} + ${speedBonus} − ${totalPenalties} = ${auraFinal}
     </p>
+<<<<<<< HEAD
     <button class="button button-primary" type="button">${action}</button>
   `;
 
   const button = card.querySelector("button");
+=======
+    <div class="button-row">
+      <button class="button button-primary" type="button" data-action="continue">${action}</button>
+      <button class="button button-secondary" type="button" data-action="menu">Menu</button>
+    </div>
+  `;
+
+  const continueButton = card.querySelector('[data-action="continue"]');
+  const menuButton = card.querySelector('[data-action="menu"]');
+>>>>>>> origin/master
   const onContinue = () => {
     if (passed && phase.number === TOTAL_PHASES) return context.state.goTo("FIM", { phase: phase.number });
     context.state.goTo("BRIEFING", { phase: passed ? phase.number + 1 : phase.number });
   };
+<<<<<<< HEAD
   button.addEventListener("click", onContinue);
   document.querySelector("#app").append(card);
   cleanup = () => button.removeEventListener("click", onContinue);
+=======
+  const onMenu = () => context.state.goTo("MENU");
+  continueButton.addEventListener("click", onContinue);
+  menuButton.addEventListener("click", onMenu);
+  document.querySelector("#app").append(card);
+  cleanup = () => {
+    continueButton.removeEventListener("click", onContinue);
+    menuButton.removeEventListener("click", onMenu);
+  };
+>>>>>>> origin/master
 }
 
 export function unmount() {

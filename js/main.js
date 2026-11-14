@@ -5,10 +5,32 @@ import * as briefing from "./ui/briefing.js";
 import * as game from "./ui/jogo.js";
 import * as result from "./ui/resultado.js";
 import * as end from "./ui/end.js";
+<<<<<<< HEAD
 import { mountDebugControls } from "./ui/debug.js";
 const root = document.querySelector("#app");
 document.title = appName;
 const state = createState({ root, screens: { MENU: menu, BRIEFING: briefing, JOGO: game, RESULTADO: result, FIM: end } });
+=======
+import * as arcade from "./ui/arcade.js";
+import * as arcadeEnd from "./ui/arcade-fim.js";
+import * as ranking from "./ui/ranking.js";
+import { mountDebugControls } from "./ui/debug.js";
+const root = document.querySelector("#app");
+document.title = appName;
+const state = createState({
+  root,
+  screens: {
+    MENU: menu,
+    BRIEFING: briefing,
+    JOGO: game,
+    RESULTADO: result,
+    FIM: end,
+    ARCADE: arcade,
+    ARCADE_FIM: arcadeEnd,
+    RANKING: ranking,
+  },
+});
+>>>>>>> origin/master
 window.state = state;
 if (new URLSearchParams(window.location.search).get("debug") === "true") {
   const cleanupDebug = mountDebugControls(state);

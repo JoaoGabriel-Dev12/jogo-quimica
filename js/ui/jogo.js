@@ -5,6 +5,10 @@ import { aplicarAcerto, aplicarErro, aplicarConsulta } from "../systems/aura.js"
 import { finalizarFase } from "../systems/fase.js";
 import { createTimer } from "../systems/timer.js";
 import { validar } from "../util/validar.js";
+<<<<<<< HEAD
+=======
+import { icons } from "./icons.js";
+>>>>>>> origin/master
 
 let cleanup = () => {};
 const attemptsByPhase = new Map();
@@ -45,10 +49,25 @@ export function mount(context) {
   screen.setAttribute("aria-label", "Área de jogo");
   screen.innerHTML = `
     <header class="game-hud">
+<<<<<<< HEAD
       <p class="hud-value" aria-label="Tempo restante"><span>Timer</span> <output data-timer></output></p>
       <p class="hud-value" aria-label="Aura"><span>Aura</span> <output data-aura></output></p>
     </header>
     <main class="question-area" tabindex="0" aria-label="Área da questão">
+=======
+      <div class="hud-lead">
+        <button class="hud-back" type="button" data-action="back" aria-label="Voltar ao briefing" title="Voltar ao briefing">${icons.arrowLeft}</button>
+        <p class="hud-value" aria-label="Tempo restante"><span>Tempo</span> <output data-timer></output></p>
+      </div>
+      <p class="hud-value" aria-label="Aura"><span>Aura</span> <output data-aura></output></p>
+    </header>
+    <div class="game-progress" aria-hidden="true"><span class="game-progress-fill" data-progress style="width: ${(1 / totalQuestoesFase) * 100}%"></span></div>
+    <main class="question-area question-stage" tabindex="0" aria-label="Área da questão">
+      <div class="question-meta">
+        <span class="question-tag" data-counter>Questão 1/${totalQuestoesFase}</span>
+        <span class="question-tag question-tag-phase" data-phase-tag>Fase ${phase} · ${phaseInfo.topic}</span>
+      </div>
+>>>>>>> origin/master
       <article class="question-text" data-question-id="${question.id}">${question.enunciado}</article>
       <p class="answer-feedback" role="status" aria-live="polite"></p>
     </main>
@@ -76,7 +95,15 @@ export function mount(context) {
   const auraOutput = screen.querySelector("[data-aura]");
   const questionElement = screen.querySelector(".question-text");
   const feedback = screen.querySelector(".answer-feedback");
+<<<<<<< HEAD
   const notebookButton = screen.querySelector(".notebook-button");
+=======
+  const questionCounter = screen.querySelector("[data-counter]");
+  const phaseTag = screen.querySelector("[data-phase-tag]");
+  const progress = screen.querySelector("[data-progress]");
+  const notebookButton = screen.querySelector(".notebook-button");
+  const backButton = screen.querySelector('[data-action="back"]');
+>>>>>>> origin/master
   const notebookClose = screen.querySelector(".notebook-close");
   const notebookPanel = screen.querySelector(".notebook-panel");
   const backdrop = screen.querySelector(".notebook-backdrop");
@@ -158,6 +185,12 @@ export function mount(context) {
     }
     usedModelIds = nextUsedModelIds;
     phaseContext.usedModelIds = usedModelIds;
+<<<<<<< HEAD
+=======
+    questionCounter.textContent = `Questão ${usedModelIds.length + 1}/${totalQuestoesFase}`;
+    phaseTag.textContent = `Fase ${phase} · ${phaseInfo.topic}`;
+    progress.style.width = `${((usedModelIds.length + 1) / totalQuestoesFase) * 100}%`;
+>>>>>>> origin/master
     consultedThisQuestion = false;
     phaseContext.consultadaNestaQuestao = false;
     inicioQuestaoTempo = phaseContext.tempoRestante;
@@ -218,8 +251,19 @@ export function mount(context) {
     }, result.correta ? GAME_CONFIG.feedback.acertoMs : GAME_CONFIG.feedback.erroMs);
   };
   const updateViewportHeight = () => root.style.setProperty("--game-viewport-height", `${Math.round(window.visualViewport?.height ?? window.innerHeight)}px`);
+<<<<<<< HEAD
 
   notebookButton.addEventListener("click", openNotebook);
+=======
+  const onBack = () => {
+    if (phaseFinished) return;
+    if (!window.confirm("Voltar ao briefing? O progresso desta tentativa será perdido.")) return;
+    context.state.goTo("BRIEFING", { phase });
+  };
+
+  notebookButton.addEventListener("click", openNotebook);
+  backButton.addEventListener("click", onBack);
+>>>>>>> origin/master
   notebookClose.addEventListener("click", closeNotebook);
   backdrop.addEventListener("click", closeNotebook);
   form.addEventListener("submit", onSubmit);
@@ -236,6 +280,10 @@ export function mount(context) {
     timer.stop();
     window.clearTimeout(feedbackTimeout);
     notebookButton.removeEventListener("click", openNotebook);
+<<<<<<< HEAD
+=======
+    backButton.removeEventListener("click", onBack);
+>>>>>>> origin/master
     notebookClose.removeEventListener("click", closeNotebook);
     backdrop.removeEventListener("click", closeNotebook);
     form.removeEventListener("submit", onSubmit);

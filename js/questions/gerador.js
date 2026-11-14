@@ -11,11 +11,15 @@ export function createSeededRng(fase, tentativa = 1) {
   };
 }
 
+<<<<<<< HEAD
 export function getQuestao(fase, rng = Math.random, { excludeModelIds = [] } = {}) {
   const modelos = catalogo.filter((modelo) => modelo.fase === Number(fase) && !excludeModelIds.includes(modelo.id));
   if (!modelos.length) throw new Error(`Nenhuma questão disponível para a fase ${fase}.`);
 
   const modelo = modelos[Math.floor(rng() * modelos.length)];
+=======
+export function criarQuestao(modelo, rng = Math.random) {
+>>>>>>> origin/master
   const questao = modelo.gerar(rng);
   const params = questao.params ?? {};
   const { params: _, ...dados } = questao;
@@ -23,6 +27,17 @@ export function getQuestao(fase, rng = Math.random, { excludeModelIds = [] } = {
   return Object.freeze({ ...dados, params, id: `${modelo.id}-${hashParams(params)}`, modelId: modelo.id, fase: modelo.fase });
 }
 
+<<<<<<< HEAD
+=======
+export function getQuestao(fase, rng = Math.random, { excludeModelIds = [] } = {}) {
+  const modelos = catalogo.filter((modelo) => modelo.fase === Number(fase) && !excludeModelIds.includes(modelo.id));
+  if (!modelos.length) throw new Error(`Nenhuma questão disponível para a fase ${fase}.`);
+
+  const modelo = modelos[Math.floor(rng() * modelos.length)];
+  return criarQuestao(modelo, rng);
+}
+
+>>>>>>> origin/master
 export function getTotalQuestoes(fase) {
   return catalogo.filter((modelo) => modelo.fase === Number(fase)).length;
 }
