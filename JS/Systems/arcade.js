@@ -1,28 +1,33 @@
 import { ARCADE_CONFIG } from "../config.js";
-import { catalogo } from "../questions/catalogo.js";
-import { criarQuestao } from "../questions/gerador.js";
+import { catalogo } from "../Questions/catalogo.js";
+import { criarQuestao, embaralhar } from "../Questions/gerador.js";
 
-/**
- * Fisher-Yates. Retorna uma nova lista embaralhada (não altera a original).
- */
-export function embaralhar(itens, rng = Math.random) {
-  const copia = [...itens];
-  for (let i = copia.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(rng() * (i + 1));
-    [copia[i], copia[j]] = [copia[j], copia[i]];
-  }
-  return copia;
-}
+export { embaralhar };
 
 /**
  * Monta uma corrida arcade com questões de todas as fases, em ordem aleatória.
+ * Cada modelo gera uma instância nova (com variantes e alternativas próprias).
  */
 export function criarCorridaArcade({ total = ARCADE_CONFIG.totalQuestoes, rng = Math.random } = {}) {
   if (typeof rng !== "function") throw new TypeError("A corrida arcade precisa de uma função rng.");
 
   const limite = Math.max(1, Math.min(Number(total) || ARCADE_CONFIG.totalQuestoes, catalogo.length));
   const modelos = embaralhar(catalogo, rng).slice(0, limite);
-  return modelos.map((modelo) => criarQuestao(modelo, rng));
+  const usados = new Set();
+  const corrida = [];
+
+  for (const modelo of modelos) {
+    let questao = criarQuestao(modelo, rng);
+    // Protege contra modelos que gerem a mesma instância (ex.: template com
+    // uma única variante) sem travar a montagem da corrida.
+    for (let tentativa = 0; tentativa < 4 && usados.has(questao.id); tentativa += 1) {
+      questao = criarQuestao(modelo, rng);
+    }
+    usados.add(questao.id);
+    corrida.push(questao);
+  }
+
+  return corrida;
 }
 
 /**

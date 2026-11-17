@@ -1,5 +1,5 @@
 import { ARCADE_CONFIG } from "../config.js";
-import { saveScore, validarNome } from "../systems/ranking.js";
+import { saveScore, validarNome } from "../Systems/ranking.js";
 import { renderRankingList } from "./ranking-list.js";
 
 let cleanup = () => {};

@@ -1,4 +1,4 @@
-import { loadRanking, clearRanking } from "../systems/ranking.js";
+import { loadRanking, clearRanking } from "../Systems/ranking.js";
 import { ARCADE_CONFIG } from "../config.js";
 import { renderRankingList } from "./ranking-list.js";
 

@@ -1,21 +1,20 @@
 import { GAME_CONFIG } from "../config.js";
 import { getPhase, TOTAL_PHASES } from "../phases.js";
-import { getQuestao, getTotalQuestoes, createSeededRng } from "../questions/gerador.js";
-import { aplicarAcerto, aplicarErro, aplicarConsulta } from "../systems/aura.js";
-import { finalizarFase } from "../systems/fase.js";
-import { createTimer } from "../systems/timer.js";
-import { validar } from "../util/validar.js";
+import { aplicarAcerto, aplicarErro, aplicarConsulta } from "../Systems/aura.js";
+import { criarSessaoFase, finalizarFase } from "../Systems/fase.js";
+import { createTimer } from "../Systems/timer.js";
+import { validar } from "../Util/validar.js";
 import { icons } from "./icons.js";
+import { renderOpcoes, setOpcoesDisabled } from "./opcoes.js";
 
 let cleanup = () => {};
-const attemptsByPhase = new Map();
 
 export function mount(context) {
   const root = document.querySelector("#app");
   const phase = Number(context.phase) || 1;
   const phaseInfo = getPhase(phase);
-  const attempt = getNextAttempt(phase);
   const phaseContext = context.state.context;
+  const sessao = criarSessaoFase(phase);
   const stats = {
     correct: 0,
     incorrect: 0,
@@ -25,7 +24,7 @@ export function mount(context) {
     errorPenalty: 0,
     ...context.stats,
   };
-  let usedModelIds = context.usedModelIds ?? [];
+  let usedModelIds = [...sessao.usados];
   const consultasPorFase = Number(context.consultasPorFase) || 0;
   let consultedThisQuestion = Boolean(context.consultadaNestaQuestao);
   let phaseFinished = false;
@@ -35,12 +34,13 @@ export function mount(context) {
   phaseContext.stats = stats;
   phaseContext.consultasPorFase = consultasPorFase;
   phaseContext.consultadaNestaQuestao = consultedThisQuestion;
+  phaseContext.usedModelIds = usedModelIds;
 
-  const totalQuestoesFase = Math.max(1, getTotalQuestoes(phase));
+  const totalQuestoesFase = sessao.total;
   const tempoIdealPorQuestao = phaseInfo.durationSeconds / totalQuestoesFase;
   let inicioQuestaoTempo = phaseContext.tempoRestante;
 
-  let question = getQuestao(phase, createSeededRng(phase, `${attempt}:${usedModelIds.length}`), { excludeModelIds: usedModelIds });
+  let question = sessao.proxima();
   const screen = document.createElement("section");
   screen.className = "game-shell";
   screen.setAttribute("aria-label", "Área de jogo");
@@ -59,6 +59,7 @@ export function mount(context) {
         <span class="question-tag question-tag-phase" data-phase-tag>Fase ${phase} · ${phaseInfo.topic}</span>
       </div>
       <article class="question-text" data-question-id="${question.id}">${question.enunciado}</article>
+      <div class="answer-options" data-options hidden aria-label="Alternativas"></div>
       <p class="answer-feedback" role="status" aria-live="polite"></p>
     </main>
     <button class="notebook-backdrop" type="button" hidden aria-label="Fechar caderno"></button>
@@ -84,6 +85,7 @@ export function mount(context) {
   const timerOutput = screen.querySelector("[data-timer]");
   const auraOutput = screen.querySelector("[data-aura]");
   const questionElement = screen.querySelector(".question-text");
+  const optionsElement = screen.querySelector("[data-options]");
   const feedback = screen.querySelector(".answer-feedback");
   const questionCounter = screen.querySelector("[data-counter]");
   const phaseTag = screen.querySelector("[data-phase-tag]");
@@ -123,6 +125,13 @@ export function mount(context) {
     timer.pause();
     phaseContext.aura = Math.max(0, phaseContext.aura);
     finalizarFase({ state: context.state, phase, filaConcluida, stats, consultasPorFase: phaseContext.consultasPorFase });
+  };
+  const renderQuestionOptions = () => {
+    renderOpcoes(optionsElement, question.opcoes, (opcao) => {
+      if (input.disabled) return;
+      input.value = opcao;
+      input.focus();
+    });
   };
   const renderDebugState = () => {
     const seconds = Math.max(0, Math.ceil(phaseContext.tempoRestante ?? 0));
@@ -164,12 +173,12 @@ export function mount(context) {
     phaseContext.consultadaNestaQuestao = true;
     renderAura(effect.variacao);
   };
-  const showNextQuestion = (nextUsedModelIds) => {
-    if (nextUsedModelIds.length >= getTotalQuestoes(phase)) {
+  const showNextQuestion = () => {
+    if (sessao.concluida()) {
       finishPhase(true);
       return;
     }
-    usedModelIds = nextUsedModelIds;
+    usedModelIds = [...sessao.usados];
     phaseContext.usedModelIds = usedModelIds;
     questionCounter.textContent = `Questão ${usedModelIds.length + 1}/${totalQuestoesFase}`;
     phaseTag.textContent = `Fase ${phase} · ${phaseInfo.topic}`;
@@ -177,7 +186,7 @@ export function mount(context) {
     consultedThisQuestion = false;
     phaseContext.consultadaNestaQuestao = false;
     inicioQuestaoTempo = phaseContext.tempoRestante;
-    question = getQuestao(phase, createSeededRng(phase, `${attempt}:${usedModelIds.length}`), { excludeModelIds: usedModelIds });
+    question = sessao.proxima();
     questionElement.dataset.questionId = question.id;
     questionElement.innerHTML = question.enunciado;
     questionElement.classList.remove("is-correct", "is-incorrect");
@@ -187,13 +196,15 @@ export function mount(context) {
     sendButton.disabled = false;
     notebookButton.disabled = false;
     feedbackTimeout = 0;
+    renderQuestionOptions();
     renderDebugState();
     timer.resume();
     window.requestAnimationFrame(() => input.focus());
   };
   const skipToNextQuestion = () => {
     if (phaseFinished || feedbackTimeout) return;
-    showNextQuestion([...usedModelIds, question.modelId]);
+    sessao.marcar(question);
+    showNextQuestion();
   };
   const forcePhaseAdvance = () => {
     if (phase >= TOTAL_PHASES) {
@@ -222,15 +233,16 @@ export function mount(context) {
       stats.errorPenalty += Math.abs(effect.variacao);
       renderAura(effect.variacao);
     }
-    const allUsedModels = [...usedModelIds, question.modelId];
+    sessao.marcar(question);
     questionElement.classList.add(result.correta ? "is-correct" : "is-incorrect");
     feedback.textContent = result.correta ? "✓" : `Resposta correta: ${result.respostaEsperada}`;
     input.disabled = true;
     sendButton.disabled = true;
     notebookButton.disabled = true;
+    setOpcoesDisabled(optionsElement, true);
     timer.pause();
     feedbackTimeout = window.setTimeout(() => {
-      showNextQuestion(allUsedModels);
+      showNextQuestion();
     }, result.correta ? GAME_CONFIG.feedback.acertoMs : GAME_CONFIG.feedback.erroMs);
   };
   const updateViewportHeight = () => root.style.setProperty("--game-viewport-height", `${Math.round(window.visualViewport?.height ?? window.innerHeight)}px`);
@@ -248,6 +260,7 @@ export function mount(context) {
   auraOutput.parentElement.addEventListener("animationend", () => auraOutput.parentElement.classList.remove("aura-gain", "aura-loss"));
   window.visualViewport?.addEventListener("resize", updateViewportHeight);
   updateViewportHeight();
+  renderQuestionOptions();
   renderTimer(phaseContext.tempoRestante);
   renderAura();
   renderDebugState();
@@ -273,9 +286,3 @@ export function mount(context) {
 }
 
 export function unmount() { cleanup(); cleanup = () => {}; }
-
-function getNextAttempt(phase) {
-  const attempt = (attemptsByPhase.get(phase) ?? 0) + 1;
-  attemptsByPhase.set(phase, attempt);
-  return attempt;
-}

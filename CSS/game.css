@@ -398,6 +398,44 @@ h1 {
 
 .question-text.is-correct { border-color: var(--primary); box-shadow: 0 0 20px var(--primary-glow); }
 .question-text.is-incorrect { border-color: #f43f5e; box-shadow: 0 0 20px rgba(244, 63, 94, 0.25); }
+
+.answer-options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  width: min(100%, 50rem);
+  margin: 0 auto;
+}
+
+.answer-options[hidden] { display: none; }
+
+.answer-option {
+  min-height: 40px;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  background: var(--bg-card-raised);
+  color: #f1f5f9;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 120ms ease, background-color 120ms ease, transform 120ms ease;
+}
+
+.answer-option:hover:not(:disabled) {
+  border-color: var(--primary);
+  background: var(--bg-card-hover);
+  transform: translateY(-1px);
+}
+
+.answer-option:focus-visible {
+  outline: 2px solid var(--primary-glow);
+  outline-offset: 2px;
+}
+
+.answer-option:disabled { cursor: default; opacity: 0.5; }
+
 .answer-feedback { min-height: 1.5rem; margin: 1rem 0 0; color: #f1f5f9; font-weight: 600; }
 .game-footer button:disabled, .game-footer input:disabled { cursor: default; opacity: 0.5; }
 

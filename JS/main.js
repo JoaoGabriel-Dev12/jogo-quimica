@@ -1,14 +1,14 @@
 import { appName } from "./config.js";
 import { createState } from "./state.js";
-import * as menu from "./ui/menu.js";
-import * as briefing from "./ui/briefing.js";
-import * as game from "./ui/jogo.js";
-import * as result from "./ui/resultado.js";
-import * as end from "./ui/end.js";
-import * as arcade from "./ui/arcade.js";
-import * as arcadeEnd from "./ui/arcade-fim.js";
-import * as ranking from "./ui/ranking.js";
-import { mountDebugControls } from "./ui/debug.js";
+import * as menu from "./UI/menu.js";
+import * as briefing from "./UI/briefing.js";
+import * as game from "./UI/jogo.js";
+import * as result from "./UI/resultado.js";
+import * as end from "./UI/end.js";
+import * as arcade from "./UI/arcade.js";
+import * as arcadeEnd from "./UI/arcade-fim.js";
+import * as ranking from "./UI/ranking.js";
+import { mountDebugControls } from "./UI/debug.js";
 const root = document.querySelector("#app");
 document.title = appName;
 const state = createState({

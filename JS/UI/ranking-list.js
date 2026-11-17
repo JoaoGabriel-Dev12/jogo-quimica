@@ -1,4 +1,4 @@
-import { formatarData } from "../systems/ranking.js";
+import { formatarData } from "../Systems/ranking.js";
 
 function criarElemento(tag, className, texto) {
   const elemento = document.createElement(tag);

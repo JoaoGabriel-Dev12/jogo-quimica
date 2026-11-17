@@ -1,6 +1,6 @@
 import { ARCADE_CONFIG } from "../config.js";
 import { TOTAL_PHASES } from "../phases.js";
-import { loadRanking } from "../systems/ranking.js";
+import { loadRanking } from "../Systems/ranking.js";
 import { icons } from "./icons.js";
 import { renderRankingList } from "./ranking-list.js";
 

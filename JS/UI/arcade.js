@@ -1,9 +1,10 @@
 import { ARCADE_CONFIG } from "../config.js";
 import { getPhase } from "../phases.js";
-import { criarCorridaArcade, calcularPontos, formatarTempo } from "../systems/arcade.js";
-import { createTimer } from "../systems/timer.js";
-import { validar } from "../util/validar.js";
+import { criarCorridaArcade, calcularPontos, formatarTempo } from "../Systems/arcade.js";
+import { createTimer } from "../Systems/timer.js";
+import { validar } from "../Util/validar.js";
 import { icons } from "./icons.js";
+import { renderOpcoes, setOpcoesDisabled } from "./opcoes.js";
 
 let cleanup = () => {};
 
@@ -48,6 +49,7 @@ export function mount(context) {
         <span class="question-tag question-tag-combo" data-combo hidden></span>
       </div>
       <article class="question-text" tabindex="0"></article>
+      <div class="answer-options" data-options hidden aria-label="Alternativas"></div>
       <p class="answer-feedback" role="status" aria-live="polite"></p>
     </main>
     <form class="game-footer arcade-footer">
@@ -71,6 +73,7 @@ export function mount(context) {
   const phaseTag = screen.querySelector("[data-phase-tag]");
   const comboTag = screen.querySelector("[data-combo]");
   const questionElement = screen.querySelector(".question-text");
+  const optionsElement = screen.querySelector("[data-options]");
   const feedback = screen.querySelector(".answer-feedback");
   const form = screen.querySelector("form");
   const input = screen.querySelector("input");
@@ -125,6 +128,11 @@ export function mount(context) {
     phaseTag.textContent = `Fase ${phase.number} · ${phase.topic}`;
     progress.style.width = `${((indice + 1) / total) * 100}%`;
     renderCombo();
+    renderOpcoes(optionsElement, question.opcoes, (opcao) => {
+      if (input.disabled) return;
+      input.value = opcao;
+      input.focus();
+    });
     input.value = "";
     input.disabled = false;
     sendButton.disabled = false;
@@ -183,6 +191,7 @@ export function mount(context) {
     timer.pause();
     input.disabled = true;
     sendButton.disabled = true;
+    setOpcoesDisabled(optionsElement, true);
   };
 
   const aoEsgotarTempo = () => {
