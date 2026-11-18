@@ -50,7 +50,7 @@ export function mount(context) {
         <button class="hud-back" type="button" data-action="back" aria-label="Voltar ao briefing" title="Voltar ao briefing">${icons.arrowLeft}</button>
         <p class="hud-value" aria-label="Tempo restante"><span>Tempo</span> <output data-timer></output></p>
       </div>
-      <p class="hud-value" aria-label="Aura"><span>Aura</span> <output data-aura></output></p>
+      <p class="hud-value" aria-label="Pontos"><span>Pontos</span> <output data-aura></output></p>
     </header>
     <div class="game-progress" aria-hidden="true"><span class="game-progress-fill" data-progress style="width: ${(1 / totalQuestoesFase) * 100}%"></span></div>
     <main class="question-area question-stage" tabindex="0" aria-label="Área da questão">
@@ -68,7 +68,7 @@ export function mount(context) {
       <div class="notebook-content"><h2 id="notebook-title">Consulta</h2>${phaseInfo.notebook.map((paragraph) => `<p>${paragraph}</p>`).join("")}</div>
     </aside>
     <form class="game-footer">
-      <button class="notebook-button" type="button" aria-expanded="false" title="Consultar caderno (-${GAME_CONFIG.aura.penalidadeConsulta} aura)">
+      <button class="notebook-button" type="button" aria-expanded="false" title="Consultar caderno (-${GAME_CONFIG.aura.penalidadeConsulta} pontos)">
         Caderno (−${GAME_CONFIG.aura.penalidadeConsulta})
       </button>
       <label class="sr-only" for="game-answer">Sua resposta</label>

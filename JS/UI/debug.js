@@ -8,7 +8,7 @@ export function mountDebugControls(state) {
   debug.innerHTML = `
     <h2>Depuração</h2>
     <dl class="debug-values">
-      <div><dt>Aura calculada</dt><dd data-debug-aura>0</dd></div>
+      <div><dt>Pontos calculados</dt><dd data-debug-aura>0</dd></div>
       <div><dt>Tempo restante</dt><dd data-debug-time>--:--</dd></div>
       <div><dt>Modelo atual</dt><dd data-debug-model>—</dd></div>
       <div><dt>Parâmetros</dt><dd><code data-debug-params>{}</code></dd></div>

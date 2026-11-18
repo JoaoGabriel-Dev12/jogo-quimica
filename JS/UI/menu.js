@@ -14,14 +14,14 @@ export function mount(context) {
   card.innerHTML = `
     <header class="menu-header">
       <h1 id="app-title">Química <span>Orgânica</span></h1>
-      <p class="status">Escolha um modo de jogo. Acerte as questões, ganhe aura e suba no ranking.</p>
+      <p class="status">Escolha um modo de jogo. Acerte as questões, ganhe pontos e suba no ranking.</p>
     </header>
     <div class="mode-grid">
       <button class="mode-card" type="button" data-mode="jornada">
         <span class="mode-icon" aria-hidden="true">${icons.flask}</span>
         <span class="mode-copy">
           <span class="mode-title">Jornada</span>
-          <span class="mode-description">${TOTAL_PHASES} fases, caderno de consulta e nota de corte de aura.</span>
+          <span class="mode-description">${TOTAL_PHASES} fases, caderno de consulta e nota de corte de pontos.</span>
         </span>
         <span class="mode-arrow" aria-hidden="true">${icons.arrowRight}</span>
       </button>
