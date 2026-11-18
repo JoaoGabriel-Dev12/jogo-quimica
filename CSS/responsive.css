@@ -247,12 +247,6 @@
     border-radius: 18px;
   }
 
-  .marquee {
-    padding-inline: 0.75rem;
-    font-size: 0.58rem;
-    letter-spacing: 0.1em;
-  }
-
   .game-footer {
     grid-template-columns: minmax(40px, auto) minmax(0, 1fr) minmax(40px, auto);
     gap: 0.3rem;

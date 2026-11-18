@@ -83,38 +83,6 @@ h1 span {
   text-shadow: 0 0 16px rgba(255, 30, 138, 0.65);
 }
 
-.marquee {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  justify-self: center;
-  gap: 0.55rem;
-  max-width: 100%;
-  padding: 0.42rem 1rem;
-  border-radius: 999px;
-  background: rgba(0, 245, 255, 0.08);
-  border: 1px solid rgba(0, 245, 255, 0.32);
-  color: var(--neon-cyan);
-  font-family: var(--font-arcade);
-  font-size: 0.64rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  line-height: 1.5;
-  text-align: center;
-  text-transform: uppercase;
-  box-shadow: inset 0 0 18px rgba(0, 245, 255, 0.1);
-}
-
-.marquee::before {
-  content: "";
-  flex: none;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--neon-magenta);
-  box-shadow: 0 0 10px var(--neon-magenta);
-}
-
 .eyebrow {
   color: var(--neon-cyan);
   font-family: var(--font-arcade);

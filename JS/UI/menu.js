@@ -13,7 +13,6 @@ export function mount(context) {
   card.setAttribute("aria-labelledby", "app-title");
   card.innerHTML = `
     <header class="menu-header">
-      <p class="marquee">Laboratório Neo-Arcade · Gabinete HD</p>
       <h1 id="app-title">Química <span>Orgânica</span></h1>
       <p class="status">Escolha um modo de jogo. Acerte as questões, ganhe aura e suba no ranking.</p>
     </header>

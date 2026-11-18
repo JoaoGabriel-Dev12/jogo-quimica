@@ -8,7 +8,6 @@ export function mount(context) {
   card.className = "start-card cabinet-frame briefing-card";
   card.setAttribute("aria-labelledby", "briefing-phase");
   card.innerHTML = `
-    <p class="marquee">Briefing de fase</p>
     <p class="eyebrow">Preparação</p>
     <h1 id="briefing-phase" class="briefing-phase">Fase ${phase.number}<span> de ${TOTAL_PHASES}</span></h1>
     <p class="briefing-topic">${phase.topic}</p>
