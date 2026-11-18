@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#05070e" />
+    <meta name="description" content="Jogo educacional de Química Orgânica com jornada em 11 fases e modo arcade com ranking local." />
+    <title>Química Orgânica</title>
+    <link rel="icon" href="data:," />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="CSS/reset.css" />
+    <link rel="stylesheet" href="CSS/base.css" />
+    <link rel="stylesheet" href="CSS/game.css" />
+    <link rel="stylesheet" href="CSS/responsive.css" />
+  </head>
+  <body>
+    <div class="cabinet-bg" aria-hidden="true">
+      <div class="cyber-grid"></div>
+    </div>
+    <main id="app" class="app-shell">
+      <section class="start-card cabinet-frame" aria-labelledby="app-title">
+        <p class="marquee">Laboratório Neo-Arcade</p>
+        <h1 id="app-title">Química <span>Orgânica</span></h1>
+        <p class="status" role="status">Carregando</p>
+        <button class="button button-primary" type="button" data-action="start">
+          Iniciar
+        </button>
+      </section>
+    </main>
+    <script type="module" src="JS/main.js"></script>
+  </body>
+</html>

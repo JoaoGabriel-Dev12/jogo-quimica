@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neo-Arcade Design System · Química Orgânica</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-deep: #05070e;
+      --cabinet-surface: #0b1021;
+      --cabinet-elevated: #121a36;
+      --neon-cyan: #00f5ff;
+      --neon-magenta: #ff1e8a;
+      --neon-green: #2dff7a;
+      --neon-yellow: #ffd000;
+      --text-main: #f4f7ff;
+      --text-muted: #8a99bd;
+      --font-arcade: 'Orbitron', sans-serif;
+      --font-sans: 'Rajdhani', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background-color: var(--bg-deep);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 17px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Fundo com Grade Cibernética Vetorial (Não pixelado) */
+    .cabinet-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 50% 0%, #101b3d 0%, #05070e 70%);
+    }
+
+    .cyber-grid {
+      position: absolute;
+      inset: -50%;
+      background-image:
+        linear-gradient(rgba(0, 245, 255, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 245, 255, 0.06) 1px, transparent 1px);
+      background-size: 46px 46px;
+      transform: perspective(600px) rotateX(45deg);
+      transform-origin: center top;
+      animation: gridScroll 18s linear infinite;
+    }
+
+    @keyframes gridScroll {
+      0% { background-position: 0 0; }
+      100% { background-position: 0 46px; }
+    }
+
+    /* Moldura Principal do Gabinete HD */
+    .cabinet-frame {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 880px;
+      background: linear-gradient(180deg, rgba(16, 24, 52, 0.94) 0%, rgba(8, 12, 26, 0.98) 100%);
+      border: 2px solid rgba(0, 245, 255, 0.42);
+      border-radius: 22px;
+      box-shadow:
+        0 0 0 1px rgba(255, 30, 138, 0.2),
+        0 24px 64px rgba(0, 0, 0, 0.8),
+        0 0 38px rgba(0, 245, 255, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      overflow: hidden;
+    }
+
+    /* Reflexo de Vidro Curvo Sutil */
+    .cabinet-frame::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 110px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    /* HUD Superior */
+    .hud-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.9rem 1.4rem;
+      background: rgba(5, 8, 18, 0.92);
+      border-bottom: 1px solid rgba(0, 245, 255, 0.22);
+    }
+
+    .hud-pill {
+      display: flex;
+      flex-direction: column;
+      background: rgba(14, 22, 48, 0.9);
+      border: 1px solid rgba(0, 245, 255, 0.28);
+      border-radius: 10px;
+      padding: 0.35rem 0.9rem;
+    }
+
+    .hud-pill span {
+      font-family: var(--font-arcade);
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .hud-pill strong {
+      font-family: var(--font-arcade);
+      font-size: 1.15rem;
+      color: var(--neon-cyan);
+      text-shadow: 0 0 10px rgba(0, 245, 255, 0.45);
+    }
+
+    .hud-pill.is-score strong {
+      color: var(--neon-yellow);
+      text-shadow: 0 0 12px rgba(255, 208, 0, 0.55);
+    }
+
+    .progress-track {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .progress-fill {
+      width: 65%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta));
+      box-shadow: 0 0 14px var(--neon-cyan);
+    }
+
+    /* Conteúdo Interno */
+    .stage {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+
+    .marquee {
+      align-self: center;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      background: rgba(0, 245, 255, 0.08);
+      border: 1px solid rgba(0, 245, 255, 0.32);
+      font-family: var(--font-arcade);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      color: var(--neon-cyan);
+    }
+
+    .title {
+      font-family: var(--font-arcade);
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 900;
+      text-align: center;
+      color: #fff;
+      text-shadow: 0 0 16px rgba(0, 245, 255, 0.6);
+    }
+
+    .title span {
+      color: var(--neon-magenta);
+      text-shadow: 0 0 16px rgba(255, 30, 138, 0.65);
+    }
+
+    .question-box {
+      background: rgba(6, 10, 22, 0.82);
+      border: 1px solid rgba(0, 245, 255, 0.28);
+      border-radius: 14px;
+      padding: 1.4rem;
+      font-size: 1.25rem;
+      font-weight: 600;
+      box-shadow: inset 0 0 24px rgba(0, 245, 255, 0.06);
+    }
+
+    /* Botões Táteis 3D Neo-Arcade */
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.9rem;
+    }
+
+    .arcade-btn {
+      font-family: var(--font-sans);
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: #fff;
+      text-align: left;
+      padding: 0.95rem 1.2rem;
+      border-radius: 12px;
+      border: 2px solid rgba(0, 245, 255, 0.36);
+      background: linear-gradient(180deg, rgba(22, 33, 70, 0.92) 0%, rgba(12, 18, 42, 0.98) 100%);
+      box-shadow: 0 5px 0 rgba(5, 9, 22, 0.95);
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .arcade-btn:hover {
+      border-color: var(--neon-cyan);
+      background: linear-gradient(180deg, rgba(0, 245, 255, 0.22) 0%, rgba(14, 24, 54, 0.98) 100%);
+      box-shadow: 0 5px 0 rgba(0, 140, 160, 0.85), 0 0 22px rgba(0, 245, 255, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .arcade-btn:active {
+      transform: translateY(4px);
+      box-shadow: 0 1px 0 rgba(0, 140, 160, 0.85);
+    }
+
+    .arcade-btn.is-correct {
+      border-color: var(--neon-green);
+      box-shadow: 0 5px 0 rgba(16, 130, 60, 0.9), 0 0 24px rgba(45, 255, 122, 0.45);
+    }
+
+    .arcade-btn.is-wrong {
+      border-color: var(--neon-magenta);
+      box-shadow: 0 5px 0 rgba(145, 15, 75, 0.9), 0 0 24px rgba(255, 30, 138, 0.45);
+    }
+
+    .footer-bar {
+      display: flex;
+      gap: 0.75rem;
+      padding: 1rem 1.4rem;
+      background: rgba(5, 8, 18, 0.95);
+      border-top: 1px solid rgba(0, 245, 255, 0.22);
+    }
+
+    .arcade-input {
+      flex: 1;
+      min-height: 46px;
+      padding: 0 1rem;
+      border-radius: 10px;
+      border: 2px solid rgba(0, 245, 255, 0.28);
+      background: #070b17;
+      color: #fff;
+      font-family: var(--font-sans);
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+
+    .arcade-input:focus {
+      outline: none;
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 16px rgba(0, 245, 255, 0.35);
+    }
+
+    .primary-cta {
+      font-family: var(--font-arcade);
+      font-size: 0.85rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0 1.4rem;
+      min-height: 46px;
+      border-radius: 12px;
+      border: 2px solid var(--neon-cyan);
+      background: linear-gradient(180deg, rgba(0, 245, 255, 0.26) 0%, rgba(0, 245, 255, 0.1) 100%);
+      color: #fff;
+      box-shadow: 0 5px 0 rgba(0, 145, 160, 0.85), 0 0 20px rgba(0, 245, 255, 0.25);
+      cursor: pointer;
+    }
+
+    .primary-cta:active {
+      transform: translateY(4px);
+      box-shadow: 0 1px 0 rgba(0, 145, 160, 0.85);
+    }
+  </style>
+</head>
+<body>
+  <div class="cabinet-bg" aria-hidden="true">
+    <div class="cyber-grid"></div>
+  </div>
+
+  <main class="cabinet-frame">
+    <header class="hud-bar">
+      <div class="hud-pill"><span>Tempo</span><strong>00:24</strong></div>
+      <div class="hud-pill is-score"><span>Pontos / Aura</span><strong>1.250</strong></div>
+      <div class="hud-pill"><span>Combo</span><strong>x3</strong></div>
+    </header>
+    <div class="progress-track"><div class="progress-fill"></div></div>
+
+    <section class="stage">
+      <div class="marquee">LABORATÓRIO NEO-ARCADE · GABINETE HD</div>
+      <h1 class="title">QUÍMICA <span>ORGÂNICA</span></h1>
+      <div class="question-box">
+        Qual é o grupo funcional característico dos álcoois saturados?
+      </div>
+      <div class="options-grid">
+        <button class="arcade-btn is-correct" type="button">A) Hidroxila (-OH) ligada a carbono saturado</button>
+        <button class="arcade-btn" type="button">B) Carbonila (C=O) terminal</button>
+        <button class="arcade-btn is-wrong" type="button">C) Carboxila (-COOH)</button>
+        <button class="arcade-btn" type="button">D) Éter (-O-)</button>
+      </div>
+    </section>
+
+    <footer class="footer-bar">
+      <input class="arcade-input" type="text" placeholder="Digite sua resposta..." />
+      <button class="primary-cta" type="button">Enviar</button>
+    </footer>
+  </main>
+</body>
+</html>

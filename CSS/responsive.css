@@ -1,0 +1,334 @@
+/* ==========================================================
+   Neo-Arcade — responsividade (mobile first, sem cortes)
+   ========================================================== */
+
+/* ---------- Tablets e celulares ---------- */
+
+@media (max-width: 640px) {
+  .mode-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .menu-card {
+    width: min(100%, 36rem);
+  }
+}
+
+@media (max-width: 599px) {
+  .briefing-card {
+    width: min(100%, 34rem);
+  }
+
+  .game-footer {
+    gap: 0.4rem;
+    padding-top: 0.5rem;
+  }
+
+  .game-footer button {
+    font-size: 0.58rem;
+  }
+
+  /* Caderno vira uma folha inferior */
+  .notebook-panel {
+    top: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    max-width: none;
+    height: min(86%, 44rem);
+    padding-bottom: env(safe-area-inset-bottom);
+    border-top: 2px solid rgba(0, 245, 255, 0.4);
+    border-left: 0;
+    border-radius: 18px 18px 0 0;
+    animation: notebook-slide-up 180ms ease-out;
+  }
+
+  @keyframes notebook-slide-up {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+}
+
+/* ---------- Celulares ---------- */
+
+@media (max-width: 420px) {
+  .start-card {
+    gap: 1rem;
+    padding: 1.25rem;
+  }
+
+  .button-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .button-row .button {
+    width: 100%;
+  }
+
+  .panel-heading {
+    gap: 0.5rem;
+  }
+
+  .panel-heading h2 {
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+  }
+
+  .panel-heading .text-button {
+    padding-inline: 0.3rem;
+    font-size: 0.56rem;
+    letter-spacing: 0.04em;
+  }
+
+  .menu-header h1 {
+    font-size: clamp(1.55rem, 8.2vw, 2.05rem);
+  }
+
+  .mode-card {
+    gap: 0.7rem;
+    padding: 0.85rem 0.9rem;
+  }
+
+  .mode-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .mode-title {
+    font-size: 0.72rem;
+  }
+
+  .mode-description {
+    font-size: 0.8rem;
+  }
+
+  /* HUD compacto do arcade */
+  .game-hud {
+    gap: 0.35rem;
+    padding-inline: max(0.55rem, env(safe-area-inset-right)) max(0.55rem, env(safe-area-inset-left));
+  }
+
+  .arcade-hud {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: 0.3rem;
+  }
+
+  .hud-lead {
+    gap: 0.35rem;
+  }
+
+  .hud-value {
+    padding: 0.24rem 0.5rem;
+  }
+
+  .hud-value > span {
+    font-size: 0.46rem;
+    letter-spacing: 0.08em;
+  }
+
+  .hud-value output {
+    font-size: 0.95rem;
+  }
+
+  .hud-back {
+    width: 2.35rem;
+    height: 2.35rem;
+    min-height: 2.35rem;
+  }
+
+  .life .icon {
+    width: 0.88rem;
+    height: 0.88rem;
+  }
+
+  .hud-combo {
+    font-size: 0.62rem;
+  }
+
+  .question-area {
+    padding: 0.8rem;
+  }
+
+  .question-stage {
+    gap: 0.7rem;
+  }
+
+  .question-text {
+    padding: 0.95rem 1rem;
+    font-size: 1.02rem;
+  }
+
+  .question-tag {
+    padding: 0.26rem 0.55rem;
+    font-size: 0.52rem;
+  }
+
+  .question-tag-phase {
+    display: none;
+  }
+
+  .answer-option {
+    min-height: 48px;
+    padding: 0.65rem 0.85rem;
+    font-size: 0.94rem;
+  }
+
+  .arcade-footer .send-button {
+    min-width: 4.5rem;
+    padding-inline: 0.65rem;
+  }
+
+  .ranking-entry {
+    grid-template-columns: 2rem minmax(0, 1fr) auto;
+    gap: 0.5rem;
+    padding-inline: 0.55rem;
+  }
+
+  .ranking-position {
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.6rem;
+  }
+
+  .ranking-meta {
+    font-size: 0.67rem;
+  }
+
+  .ranking-score strong {
+    font-size: 0.9rem;
+  }
+
+  .arcade-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .name-row {
+    flex-direction: column;
+  }
+
+  .name-row .button {
+    width: 100%;
+  }
+
+  .result-breakdown dd {
+    font-size: 0.72rem;
+  }
+
+  .aura-equation {
+    font-size: 0.64rem;
+    letter-spacing: 0.02em;
+  }
+
+  .score-hero {
+    padding: 1.05rem;
+  }
+
+  .debug-controls {
+    width: min(20rem, calc(100vw - 1rem));
+  }
+}
+
+/* ---------- Telas muito estreitas ---------- */
+
+@media (max-width: 359px) {
+  .app-shell {
+    padding-inline: max(0.65rem, env(safe-area-inset-right)) max(0.65rem, env(safe-area-inset-left));
+  }
+
+  .start-card {
+    gap: 0.9rem;
+    padding: 1.15rem;
+    border-radius: 18px;
+  }
+
+  .marquee {
+    padding-inline: 0.75rem;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+  }
+
+  .game-footer {
+    grid-template-columns: minmax(40px, auto) minmax(0, 1fr) minmax(40px, auto);
+    gap: 0.3rem;
+    padding-inline: max(0.45rem, env(safe-area-inset-right)) max(0.45rem, env(safe-area-inset-left));
+  }
+
+  .game-footer button {
+    padding-inline: 0.5rem;
+    font-size: 0.56rem;
+  }
+
+  .app-shell.game-active {
+    padding: 0.3rem;
+  }
+}
+
+/* ---------- Paisagem com pouca altura ---------- */
+
+@media (max-width: 900px) and (max-height: 600px) and (orientation: landscape) {
+  .game-hud {
+    min-height: 0;
+    padding-top: max(0.3rem, env(safe-area-inset-top));
+    padding-bottom: 0.3rem;
+  }
+
+  .hud-value {
+    padding: 0.18rem 0.55rem;
+  }
+
+  .hud-value > span {
+    font-size: 0.46rem;
+  }
+
+  .hud-value output {
+    font-size: 0.9rem;
+  }
+
+  .hud-back {
+    width: 2.2rem;
+    height: 2.2rem;
+    min-height: 2.2rem;
+  }
+
+  .game-progress {
+    height: 4px;
+  }
+
+  .game-footer {
+    padding-top: 0.3rem;
+    padding-bottom: calc(0.3rem + env(safe-area-inset-bottom));
+  }
+
+  .question-area {
+    padding: 0.5rem max(0.75rem, env(safe-area-inset-right)) 0.5rem max(0.75rem, env(safe-area-inset-left));
+  }
+
+  .question-stage {
+    gap: 0.45rem;
+  }
+
+  .question-text {
+    padding: 0.75rem;
+    font-size: clamp(0.95rem, 2.4vw, 1.15rem);
+  }
+
+  .question-meta {
+    gap: 0.3rem;
+  }
+
+  .answer-option {
+    min-height: 44px;
+    padding: 0.45rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .notebook-panel {
+    width: min(70vw, 32rem);
+  }
+}

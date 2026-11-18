@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#090a0f" />
+    <meta name="description" content="Laboratório para testar a geração, as respostas e as alternativas das questões do jogo de Química Orgânica." />
+    <title>Laboratório de Questões · Química Orgânica</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="CSS/reset.css" />
+    <link rel="stylesheet" href="CSS/base.css" />
+    <link rel="stylesheet" href="CSS/game.css" />
+    <link rel="stylesheet" href="CSS/teste.css" />
+    <link rel="stylesheet" href="CSS/responsive.css" />
+  </head>
+  <body>
+    <main id="app" class="app-shell teste-shell">
+      <section class="teste-card" aria-labelledby="teste-title">
+        <header class="teste-header">
+          <div>
+            <p class="eyebrow">Área de testes</p>
+            <h1 id="teste-title">Laboratório de Questões</h1>
+            <p class="status">
+              Gere questões do catálogo, inspecione respostas e valide alternativas. Esta página não altera o jogo.
+            </p>
+          </div>
+          <a class="button button-secondary teste-back" href="./index.html">Voltar ao jogo</a>
+        </header>
+
+        <div class="teste-controls">
+          <label class="teste-field">
+            <span>Fase</span>
+            <select data-phase></select>
+          </label>
+          <label class="teste-field teste-field-seed">
+            <span>Seed (reproduz a sequência)</span>
+            <input data-seed type="text" spellcheck="false" autocomplete="off" autocapitalize="off" />
+          </label>
+          <div class="teste-actions">
+            <button class="button button-primary" type="button" data-action="gerar">Gerar questão</button>
+            <button class="button button-secondary" type="button" data-action="variante">Nova variante</button>
+            <button class="button button-secondary" type="button" data-action="seed">Nova seed</button>
+          </div>
+        </div>
+
+        <p class="teste-session-note" data-session-note hidden></p>
+
+        <div class="teste-layout">
+          <section class="teste-panel teste-question-panel" aria-labelledby="teste-question-title">
+            <h2 id="teste-question-title" class="sr-only">Questão gerada</h2>
+            <div class="question-meta teste-meta" data-meta></div>
+            <article class="question-text teste-question" data-question tabindex="0"></article>
+            <div class="answer-options" data-options hidden aria-label="Alternativas (clique para validar)"></div>
+            <form class="teste-answer" data-form>
+              <label class="sr-only" for="teste-answer">Sua resposta</label>
+              <input
+                id="teste-answer"
+                data-answer
+                type="text"
+                placeholder="Digite uma resposta"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+              />
+              <button class="button button-primary" type="submit">Validar</button>
+            </form>
+            <p class="answer-feedback" data-feedback role="status" aria-live="polite"></p>
+            <p class="teste-hint" data-hint hidden></p>
+
+            <div class="teste-facts">
+              <section class="teste-fact">
+                <h3>Parâmetros sorteados</h3>
+                <pre data-params>{}</pre>
+              </section>
+              <section class="teste-fact">
+                <h3>Respostas aceitas <small>clique para validar</small></h3>
+                <div class="teste-chips" data-respostas></div>
+              </section>
+              <section class="teste-fact">
+                <h3>Aliases <small>clique para validar</small></h3>
+                <div class="teste-chips" data-aliases></div>
+              </section>
+              <section class="teste-fact">
+                <h3>Distratores <small>devem ser recusados</small></h3>
+                <div class="teste-chips" data-distratores></div>
+              </section>
+            </div>
+          </section>
+
+          <aside class="teste-panel teste-session-panel" aria-labelledby="teste-session-title">
+            <div class="teste-session-head">
+              <h2 id="teste-session-title">Sessão da fase</h2>
+              <output class="teste-session-count" data-session-count>—</output>
+            </div>
+            <p class="teste-session-help">
+              Simula a sequência usada no jogo, sem repetir modelos. Clique em um item para revisitar a questão.
+            </p>
+            <div class="teste-actions teste-session-actions">
+              <button class="button button-primary" type="button" data-action="sessao">Nova sessão</button>
+              <button class="button button-secondary" type="button" data-action="anterior" disabled>Anterior</button>
+              <button class="button button-secondary" type="button" data-action="proxima" disabled>Próxima</button>
+            </div>
+            <ol class="teste-session-list" data-session-list></ol>
+          </aside>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="JS/teste.js"></script>
+  </body>
+</html>

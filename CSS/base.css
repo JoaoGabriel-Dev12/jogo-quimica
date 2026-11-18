@@ -1,0 +1,173 @@
+/* ==========================================================
+   Neo-Arcade / Modern Cabinet — Design Tokens
+   Gabinete HD vetorial, fundo com grade cibernética e neon.
+   ========================================================== */
+
+:root {
+  color-scheme: dark;
+
+  /* Paleta neon */
+  --bg-deep: #05070e;
+  --bg-main: #05070e;
+  --cabinet-surface: #0b1021;
+  --cabinet-elevated: #121a36;
+  --neon-cyan: #00f5ff;
+  --neon-magenta: #ff1e8a;
+  --neon-green: #2dff7a;
+  --neon-yellow: #ffd000;
+
+  /* Texto */
+  --text-main: #f4f7ff;
+  --text: var(--text-main);
+  --text-muted: #8a99bd;
+  --text-dim: #5f6f93;
+
+  /* Compatibilidade com os componentes existentes */
+  --bg-card: var(--cabinet-surface);
+  --bg-card-raised: var(--cabinet-elevated);
+  --bg-card-hover: #1b2547;
+  --bg-input: #070b17;
+  --border-color: rgba(0, 245, 255, 0.18);
+  --border-strong: rgba(0, 245, 255, 0.34);
+
+  --primary: var(--neon-green);
+  --primary-hover: #6dffa5;
+  --primary-soft: rgba(45, 255, 122, 0.12);
+  --primary-glow: rgba(45, 255, 122, 0.34);
+
+  --accent-cyan: var(--neon-cyan);
+  --accent-cyan-soft: rgba(0, 245, 255, 0.1);
+  --accent-cyan-glow: rgba(0, 245, 255, 0.34);
+
+  --danger: var(--neon-magenta);
+  --danger-soft: rgba(255, 30, 138, 0.12);
+  --warning: var(--neon-yellow);
+
+  /* Tipografia */
+  --font-sans: "Rajdhani", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-arcade: "Orbitron", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Cascadia Code", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.5;
+  background: var(--bg-deep);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  background: var(--bg-deep);
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background:
+    radial-gradient(circle at 50% -10%, rgba(16, 27, 61, 0.75) 0%, rgba(5, 7, 14, 0) 62%),
+    var(--bg-deep);
+  color: var(--text);
+  font-family: var(--font-sans);
+}
+
+/* ==========================================================
+   Fundo fixo do gabinete + grade cibernética animada
+   ========================================================== */
+
+.cabinet-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 0%, #101b3d 0%, #05070e 70%);
+}
+
+.cyber-grid {
+  position: absolute;
+  inset: -50%;
+  background-image:
+    linear-gradient(rgba(0, 245, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 245, 255, 0.06) 1px, transparent 1px);
+  background-size: 46px 46px;
+  transform: perspective(600px) rotateX(45deg);
+  transform-origin: center top;
+  animation: grid-scroll 18s linear infinite;
+}
+
+@keyframes grid-scroll {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 46px;
+  }
+}
+
+/* ==========================================================
+   Base de interação
+   ========================================================== */
+
+::selection {
+  background: rgba(255, 30, 138, 0.35);
+  color: #ffffff;
+}
+
+button,
+input,
+select {
+  min-height: 44px;
+}
+
+button {
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+input {
+  font-size: 16px;
+  caret-color: var(--neon-cyan);
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--neon-cyan);
+  outline-offset: 3px;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+#app {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-deep);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1d2a51;
+  border: 2px solid var(--bg-deep);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 245, 255, 0.45);
+}
